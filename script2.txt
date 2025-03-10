@@ -1,0 +1,1 @@
+execute_script /home/studs/s452689/lab5/script1.txt
