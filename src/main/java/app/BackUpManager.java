@@ -10,24 +10,38 @@ public class BackUpManager {
     File file = null;
     ProductBuilder productBuilder;
 
+    /**
+     * @param pathToFile путь файла временного сохранения
+     */
     public BackUpManager(String pathToFile) {
         file = new File(pathToFile);
     }
 
+
+    /**
+     * Сохраняет массив объектов во временный файл.
+     *
+     * @param object массив объектов для сохранения
+     * @param <E> тип объектов массива
+     */
     public <E> void backUp(E ... object) {
         try (ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(file));) {
-            for (E o : object) {
-                stream.writeObject(o);
-            }
+            stream.writeObject(object);
         } catch (Exception e) {
             throw new UnknownException(e.toString());
         }
     }
 
+    /**
+     * Читает из файла сохранения билдер продукта.
+     * Удаляет временный файл после прочтения.
+     *
+     * @return Билдер продукта
+     */
     public ProductBuilder readBackUp() {
         if (file.exists()) {
             try (ObjectInputStream stream = new ObjectInputStream(new FileInputStream(file))) {
-                productBuilder = ((ProductBuilder) stream.readObject());
+                productBuilder = ((ProductBuilder[]) stream.readObject())[0];
                 stream.close();
                 file.delete();
                 return productBuilder;
@@ -38,6 +52,9 @@ public class BackUpManager {
         return null;
     }
 
+    /**
+     * Удаление временного файла.
+     */
     public void deleteTempFile() {
         file.delete();
     }
