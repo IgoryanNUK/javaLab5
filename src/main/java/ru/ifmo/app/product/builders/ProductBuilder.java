@@ -9,6 +9,9 @@ import app.product.UnitOfMeasure;
 import java.io.Externalizable;
 import java.io.Serializable;
 
+/**
+ * Класс для создания продукта.
+ */
 public class ProductBuilder implements Serializable {
     private String name = null;
     private Coordinates coordinates = null;
@@ -19,16 +22,23 @@ public class ProductBuilder implements Serializable {
     private Person owner = null;
     transient private BackUpManager backUpManager;
 
+    /**
+     * Стандартный конструктор.
+     * Принимает на вход мэнэджера для автоматического сохранения на случай некорректного завершения приложения.
+     *
+     * @param bm мэнэджер автоматического сохранения
+     */
     public ProductBuilder(BackUpManager bm) {
         backUpManager = bm;
     }
 
+    /**
+     * Устанавливает мэнэджер автоматического сохранения.
+     *
+     * @param bm мэнэджер автоматического сохранения
+     */
     public void setBackUpManager(BackUpManager bm) {
         backUpManager = bm;
-    }
-
-    public void print() {
-        System.out.println(name + coordinates+price+ partNumber+ manufactureCost);
     }
 
     public void setName(String name) {
@@ -82,10 +92,20 @@ public class ProductBuilder implements Serializable {
 
     public Person getOwner() {return owner;}
 
+    /**
+     * Создаёт готовый продукт.
+     * Использует ранее введённые или дефолтные значения для переменных.
+     *
+     * @return сконструированный продукт
+     */
     public Product createProduct() {
         return new Product(name, coordinates, price, partNumber, manufactureCost, unitOfMeasure, owner);
     }
 
+    /**
+     * Автосохранение.
+     * Сохраняет все поля билдера, кроме мэнэджера автосохранения.
+     */
     private void save() {
         backUpManager.backUp(this);
     }
