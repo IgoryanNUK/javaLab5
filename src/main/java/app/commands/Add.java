@@ -29,7 +29,9 @@ public class Add implements Command {
 
             ProductBuilder pb = new ProductBuilder(app.getBackupManager());
 
-            pb.setName(nameEnter(input, "название продукта", app.isScriptRunning()));
+            String productName = nameEnter(input, "название продукта", app.isScriptRunning());
+
+            pb.setName(productName);
             pb.setCoordinates(coordinatesEnter(input, app.isScriptRunning()));
             pb.setPrice(floatEnter(input, "стоимость продукта", app.isScriptRunning()));
             pb.setPartNumber(partNumberEnter(input, app.isScriptRunning()));
@@ -41,7 +43,7 @@ public class Add implements Command {
             if (app.isScriptRunning()) {
                 System.out.println();
             }
-            System.out.println("*******Продукт " + name + " успешно добавлен в коллекцию*******");
+            System.out.println("*******Продукт " + productName + " успешно добавлен в коллекцию*******");
         } catch (UnexceptibleValue u) {
             throw u;
         } catch (Exception e) {
@@ -56,13 +58,13 @@ public class Add implements Command {
             System.out.println("*******Создание продукта*******");
             boolean isScriptRunning = app.isScriptRunning();
 
-            String name;
+            String productName;
             if (pb.getName() == null){
-                name = nameEnter(input, "название продукта", isScriptRunning);
-                pb.setName(name);
+                productName = nameEnter(input, "название продукта", isScriptRunning);
+                pb.setName(productName);
             } else {
-                name = pb.getName();
-                System.out.println("Введитё имя: " + name);
+                productName = pb.getName();
+                System.out.println("Введитё имя: " + productName);
             }
 
 
@@ -112,7 +114,7 @@ public class Add implements Command {
             if (app.isScriptRunning()) {
                 System.out.println();
             }
-            System.out.println("*******Продукт " + name + " успешно добавлен в коллекцию*******");
+            System.out.println("*******Продукт " + productName + " успешно добавлен в коллекцию*******");
         } catch (UnexceptibleValue u) {
             throw u;
         } catch (Exception e) {

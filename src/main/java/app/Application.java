@@ -37,13 +37,7 @@ public class Application {
     }
 
     /** Запускает приложение. */
-    public void run() throws Exception {
-        /*try {
-            String path = System.getenv("LAB5_PATH");
-            checkUnsaved(path.substring(0, path.lastIndexOf("\\")));
-        } catch(Exception e) {
-            System.out.println(e);
-        }*/
+    public void run() {
         try {
             readCollection(System.getenv("LAB5_PATH"));
         } catch (Exception e) {

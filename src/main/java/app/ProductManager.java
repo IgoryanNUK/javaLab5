@@ -6,10 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.function.Predicate;
 
 /** Класс управления коллекцией продуктов. */
@@ -108,6 +105,9 @@ public class ProductManager {
             List<Product> productList = objectMapper.readValue(inputStreamReader, new TypeReference<List<Product>>() {
             });
             products = new TreeSet<>(productList);
+            if (!productsValidation()) {
+                System.out.println("!!! Не удалось прочитать некоторые из сохранённых данных, так как они были повреждены !!!");
+            }
             setIdsBusy();
             System.out.println("***Сохранённые данные успешно прочитаны***");
         } catch (FileNotFoundException f) {
@@ -122,5 +122,27 @@ public class ProductManager {
      */
     private void setIdsBusy() {
         products.forEach(e -> Product.setIdBusy(e.getId()));
+    }
+
+    /**
+     * Проверяет валидность объектов коллекции.
+     * Если какой-то объект не обладает нужным полем, то он удаляется из коллекции.
+     *
+     * @return true, если все объекты валидны, иначе false
+     */
+    private boolean productsValidation() {
+        Iterator<Product> it = products.iterator();
+        boolean ifCorrect = true;
+
+        while (it.hasNext()) {
+            Product p = it.next();
+            if (!(p.getName() != null && p.getCoordinates() != null && p.getCreationDate() != null &&
+                    p.getPrice() != null && p.getUnitOfMeasure() != null && p.getOwner() != null)) {
+                it.remove();
+                ifCorrect = false;
+            }
+        }
+
+        return ifCorrect;
     }
 }
